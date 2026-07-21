@@ -24,6 +24,7 @@ use RunApi\FishAudio\FishAudioClient;
 $client = new FishAudioClient(); // reads RUNAPI_API_KEY
 $result = $client->textToSpeech->run([
     'model' => 's1',
+    'references' => [['audio' => 'UklGRg==', 'text' => 'Reference transcript']],
     'text' => 'A product render',
 ]);
 

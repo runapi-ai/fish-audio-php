@@ -31,7 +31,8 @@ final class FishAudioClientTest extends TestCase
 
         $result = $client->textToSpeech->run([
             'model' => 's1',
-            'text' => 'Hello from RunAPI',
+            'references' => [['audio' => 'UklGRg==', 'text' => 'Reference transcript']],
+            'text' => 'A product render',
         ]);
 
         $body = json_decode((string) $transport->requests[0]->getBody(), true, flags: JSON_THROW_ON_ERROR);
@@ -41,7 +42,11 @@ final class FishAudioClientTest extends TestCase
         self::assertSame('audio/mpeg', $result->audios[0]->mimeType);
         self::assertSame(128, $result->audios[0]->sizeBytes);
         self::assertSame('kept', $result->toArray()['extra_field']);
-        self::assertSame(['model' => 's1', 'text' => 'Hello from RunAPI'], $body);
+        self::assertSame([
+            'model' => 's1',
+            'references' => [['audio' => 'UklGRg==', 'text' => 'Reference transcript']],
+            'text' => 'A product render',
+        ], $body);
         self::assertSame('/api/v1/fish_audio/text_to_speech', $transport->requests[0]->getUri()->getPath());
     }
 
