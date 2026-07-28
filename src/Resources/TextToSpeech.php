@@ -15,8 +15,8 @@ readonly class TextToSpeech extends SyncResource
      * Run text to speech and return its response.
      *
      * @param array{
-     *   model: string,
      *   text: string,
+     *   model?: string,
      *   references?: list<array{audio: string, text: string}>
      * } $params
      */

@@ -1,5 +1,11 @@
 # Changelog
 
+## [v0.1.2](https://github.com/runapi-ai/fish-audio-php/releases/tag/v0.1.2) - 2026-07-28
+
+### Added
+- Decode typed Task Billing Facts on synchronous text-to-speech responses.
+
+
 ## [v0.1.1](https://github.com/runapi-ai/fish-audio-php/releases/tag/v0.1.1) - 2026-07-21
 
 ### Added
