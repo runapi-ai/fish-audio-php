@@ -33,7 +33,7 @@
   "homepage": "https://runapi.ai/models/fish-audio",
   "support": {
     "source": "https://github.com/runapi-ai/fish-audio-php",
-    "docs": "https://runapi.ai/docs#sdk-fish-audio",
+    "docs": "https://runapi.ai/docs/resources/sdks",
     "issues": "https://github.com/runapi-ai/fish-audio-php/issues"
   },
   "keywords": [

@@ -37,8 +37,8 @@ Pass request parameters as associative arrays with snake_case keys. Keep
 ## Links
 
 - Model page: https://runapi.ai/models/fish-audio
-- SDK docs: https://runapi.ai/docs#sdk-fish-audio
-- Product docs: https://runapi.ai/docs#fish-audio
+- SDK docs: https://runapi.ai/docs/resources/sdks
+- Product docs: https://runapi.ai/docs/api/fish-audio/text-to-speech
 - Pricing and rate limits: https://runapi.ai/models/fish-audio/s1
 - Full catalog: https://runapi.ai/models
 - GitHub repository: https://github.com/runapi-ai/fish-audio-php
