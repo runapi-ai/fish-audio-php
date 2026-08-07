@@ -11,7 +11,7 @@ final class Types
      *
      * @var list<string>
      */
-    public const TEXT_TO_SPEECH_MODELS = ['s1', 's2-pro'];
+    public const TEXT_TO_SPEECH_MODELS = ['s1', 's2-pro', 's2.1-pro'];
 
     private function __construct()
     {

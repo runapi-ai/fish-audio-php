@@ -7,7 +7,7 @@ namespace RunApi\FishAudio\Models;
 use RunApi\Core\Models\BaseModel;
 use RunApi\Core\Support\Payload;
 
-/** RunAPI-managed MP3 audio result metadata. */
+/** RunAPI-managed audio result metadata. */
 readonly class Audio extends BaseModel
 {
     /** @param array<string, mixed> $raw Raw response payload preserved by `toArray()`. */

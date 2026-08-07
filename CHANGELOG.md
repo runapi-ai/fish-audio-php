@@ -1,5 +1,11 @@
 # Changelog
 
+## [v0.2.0](https://github.com/runapi-ai/fish-audio-php/releases/tag/v0.2.0) - 2026-08-07
+
+### Added
+- Add s2.1-pro with managed MP3 and WAV output controls.
+
+
 ## [v0.1.2](https://github.com/runapi-ai/fish-audio-php/releases/tag/v0.1.2) - 2026-07-28
 
 ### Added

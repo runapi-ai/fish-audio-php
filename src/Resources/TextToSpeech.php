@@ -17,6 +17,9 @@ readonly class TextToSpeech extends SyncResource
      * @param array{
      *   text: string,
      *   model?: string,
+     *   output_format?: 'mp3'|'wav',
+     *   sample_rate_hz?: 8000|16000|24000|32000|44100,
+     *   bitrate_kbps?: 64|128|192,
      *   references?: list<array{audio: string, text: string}>
      * } $params
      */

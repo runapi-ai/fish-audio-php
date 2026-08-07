@@ -30,8 +30,10 @@ final class FishAudioClientTest extends TestCase
         $client = new FishAudioClient(new ClientOptions(apiKey: 'k', httpClient: $transport, maxRetries: 0));
 
         $result = $client->textToSpeech->run([
-            'model' => 's1',
+            'model' => 's2.1-pro',
             'text' => 'A product render',
+            'output_format' => 'wav',
+            'sample_rate_hz' => 24000,
             'references' => [['audio' => 'UklGRg==', 'text' => 'Reference transcript']],
         ]);
 
@@ -44,8 +46,10 @@ final class FishAudioClientTest extends TestCase
         self::assertSame(11, $result->billing?->settlement?->chargedAmountCents);
         self::assertSame('kept', $result->toArray()['extra_field']);
         self::assertSame([
-            'model' => 's1',
+            'model' => 's2.1-pro',
             'text' => 'A product render',
+            'output_format' => 'wav',
+            'sample_rate_hz' => 24000,
             'references' => [['audio' => 'UklGRg==', 'text' => 'Reference transcript']],
         ], $body);
         self::assertSame('/api/v1/fish_audio/text_to_speech', $transport->requests[0]->getUri()->getPath());
