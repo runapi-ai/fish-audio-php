@@ -26,6 +26,19 @@ abstract readonly class SyncResource
     /** @param array<string, mixed> $params */
     public function run(array $params, ?RequestOptions $options = null): BaseModel
     {
+        return $this->execute($params, $options);
+    }
+
+    /**
+     * @param array<string, mixed> $params
+     */
+    protected function execute(
+        array $params,
+        ?RequestOptions $options = null,
+        string $method = 'post',
+        ?string $path = null,
+        string $placement = 'body',
+    ): BaseModel {
         $params = $this->compact($params);
         $model = $params['model'] ?? '_';
         if (!is_string($model)) {
@@ -37,10 +50,14 @@ abstract readonly class SyncResource
             throw new ValidationException($this->responseClass . ' must define fromArray');
         }
 
-        $response = $factory($this->http->request('post', $this->endpoint, [
-            'body' => $params,
-            'options' => $options,
-        ]));
+        $request = ['options' => $options];
+        if ($placement === 'body') {
+            $request['body'] = $params;
+        } elseif ($placement === 'query') {
+            $request['query'] = $params;
+        }
+
+        $response = $factory($this->http->request($method, $path ?? $this->endpoint, $request));
         if (!$response instanceof BaseModel) {
             throw new ValidationException($this->responseClass . ' must return a BaseModel');
         }

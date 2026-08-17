@@ -1,5 +1,12 @@
 # Changelog
 
+## [v0.3.0](https://github.com/runapi-ai/fish-audio-php/releases/tag/v0.3.0) - 2026-08-17
+
+### Added
+- Add typed create, list, and get resources for account-owned reusable voices.
+- Accept trained account-owned voice IDs in s1, s2-pro, and s2.1-pro text-to-speech requests.
+
+
 ## [v0.2.0](https://github.com/runapi-ai/fish-audio-php/releases/tag/v0.2.0) - 2026-08-07
 
 ### Added

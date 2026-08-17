@@ -1,6 +1,6 @@
 {
   "name": "runapi-ai/fish-audio",
-  "description": "RunAPI Fish Audio Composer package for PHP applications",
+  "description": "RunAPI Fish Audio Composer package for account-owned voice resources and speech generation in PHP applications",
   "type": "library",
   "license": "Apache-2.0",
   "authors": [
@@ -11,7 +11,7 @@
   ],
   "require": {
     "php": ">=8.2",
-    "runapi-ai/core": "^0.3.0"
+    "runapi-ai/core": "^0.5.0"
   },
   "autoload": {
     "psr-4": {

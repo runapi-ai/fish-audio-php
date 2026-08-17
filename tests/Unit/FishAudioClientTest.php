@@ -11,6 +11,11 @@ use RunApi\Core\Errors\ValidationException;
 use RunApi\Core\Tests\Fixtures\QueueHttpClient;
 use RunApi\FishAudio\FishAudioClient;
 use RunApi\FishAudio\Models\TextToSpeechResponse;
+use RunApi\FishAudio\Models\VoiceResponse;
+use RunApi\FishAudio\Models\VoicesResponse;
+use RunApi\FishAudio\Resources\CreateVoice;
+use RunApi\FishAudio\Resources\GetVoice;
+use RunApi\FishAudio\Resources\ListVoices;
 use RunApi\FishAudio\Resources\TextToSpeech;
 
 final class FishAudioClientTest extends TestCase
@@ -20,6 +25,9 @@ final class FishAudioClientTest extends TestCase
         $client = new FishAudioClient(new ClientOptions(apiKey: 'k', httpClient: new QueueHttpClient([]), maxRetries: 0));
 
         self::assertInstanceOf(TextToSpeech::class, $client->textToSpeech);
+        self::assertInstanceOf(CreateVoice::class, $client->createVoice);
+        self::assertInstanceOf(ListVoices::class, $client->listVoices);
+        self::assertInstanceOf(GetVoice::class, $client->getVoice);
     }
 
     public function testRunPostsOnlyPublicParamsAndReturnsManagedAudio(): void
@@ -53,6 +61,75 @@ final class FishAudioClientTest extends TestCase
             'references' => [['audio' => 'UklGRg==', 'text' => 'Reference transcript']],
         ], $body);
         self::assertSame('/api/v1/fish_audio/text_to_speech', $transport->requests[0]->getUri()->getPath());
+    }
+
+    public function testRunPostsReusableVoiceId(): void
+    {
+        $transport = new QueueHttpClient([
+            new Response(200, [], '{"id":"task_1","status":"completed","audios":[]}'),
+        ]);
+        $client = new FishAudioClient(new ClientOptions(apiKey: 'k', httpClient: $transport, maxRetries: 0));
+
+        $client->textToSpeech->run([
+            'model' => 's1',
+            'text' => 'Hello from RunAPI',
+            'voice_id' => 'voice_1',
+        ]);
+
+        $body = json_decode((string) $transport->requests[0]->getBody(), true, flags: JSON_THROW_ON_ERROR);
+        self::assertSame(['model' => 's1', 'text' => 'Hello from RunAPI', 'voice_id' => 'voice_1'], $body);
+    }
+
+    public function testCreatesPrivateReusableVoice(): void
+    {
+        $transport = new QueueHttpClient([
+            new Response(200, [], '{"voice":{"voice_id":"voice_1","name":"Narrator","state":"training"},"billing":{"reservation":null,"settlement":{"charged_amount_cents":0,"amount_micro_cents":0},"refund":null}}'),
+        ]);
+        $client = new FishAudioClient(new ClientOptions(apiKey: 'k', httpClient: $transport, maxRetries: 0));
+
+        $result = $client->createVoice->run([
+            'name' => 'Narrator',
+            'source_audio_url' => 'https://cdn.runapi.ai/narrator.mp3',
+        ]);
+
+        self::assertInstanceOf(VoiceResponse::class, $result);
+        self::assertSame('training', $result->voice->state);
+        self::assertSame(0, $result->billing->settlement?->amountMicroCents);
+        self::assertSame('/api/v1/fish_audio/voices', $transport->requests[0]->getUri()->getPath());
+        self::assertSame('POST', $transport->requests[0]->getMethod());
+    }
+
+    public function testListsAccountOwnedReusableVoices(): void
+    {
+        $transport = new QueueHttpClient([
+            new Response(200, [], '{"voices":[{"voice_id":"voice_1","name":"Narrator","state":"trained"}],"total":1,"page_number":2,"page_size":25,"billing":{"reservation":null,"settlement":{"charged_amount_cents":0,"amount_micro_cents":0},"refund":null}}'),
+        ]);
+        $client = new FishAudioClient(new ClientOptions(apiKey: 'k', httpClient: $transport, maxRetries: 0));
+
+        $result = $client->listVoices->run(['page_number' => 2, 'page_size' => 25]);
+
+        self::assertInstanceOf(VoicesResponse::class, $result);
+        self::assertSame('voice_1', $result->voices[0]->voiceId);
+        self::assertSame(0, $result->billing->settlement?->amountMicroCents);
+        self::assertSame('/api/v1/fish_audio/voices', $transport->requests[0]->getUri()->getPath());
+        self::assertSame('page_number=2&page_size=25', $transport->requests[0]->getUri()->getQuery());
+        self::assertSame('GET', $transport->requests[0]->getMethod());
+    }
+
+    public function testGetsEncodedAccountOwnedReusableVoiceId(): void
+    {
+        $transport = new QueueHttpClient([
+            new Response(200, [], '{"voice":{"voice_id":"voice/1","name":"Narrator","state":"trained"},"billing":{"reservation":null,"settlement":{"charged_amount_cents":0,"amount_micro_cents":0},"refund":null}}'),
+        ]);
+        $client = new FishAudioClient(new ClientOptions(apiKey: 'k', httpClient: $transport, maxRetries: 0));
+
+        $result = $client->getVoice->run(['voice_id' => 'voice/1']);
+
+        self::assertInstanceOf(VoiceResponse::class, $result);
+        self::assertSame('trained', $result->voice->state);
+        self::assertSame(0, $result->billing->settlement?->amountMicroCents);
+        self::assertSame('/api/v1/fish_audio/voices/voice%2F1', $transport->requests[0]->getUri()->getPath());
+        self::assertSame('GET', $transport->requests[0]->getMethod());
     }
 
     public function testRunRequiresManagedAudioMetadata(): void

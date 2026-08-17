@@ -20,7 +20,8 @@ readonly class TextToSpeech extends SyncResource
      *   output_format?: 'mp3'|'wav',
      *   sample_rate_hz?: 8000|16000|24000|32000|44100,
      *   bitrate_kbps?: 64|128|192,
-     *   references?: list<array{audio: string, text: string}>
+     *   references?: list<array{audio: string, text: string}>,
+     *   voice_id?: string
      * } $params
      */
     public function run(array $params, ?RequestOptions $options = null): TextToSpeechResponse
