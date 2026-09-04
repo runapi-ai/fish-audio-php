@@ -50,6 +50,10 @@ voice resources created by the current account. Only voices in the `trained`
 state can be submitted for speech generation; a returned `voice_id` is a
 best-effort reference and may stop working later.
 
+Speech and voice requests return their terminal responses directly when
+available and otherwise follow an accepted Task automatically. Use `subscribe()`
+to observe Task updates.
+
 Alternatively, pass request-scoped `references` entries with base64-encoded raw
 audio bytes and exact transcripts when the request must not depend on prior reuse.
 
