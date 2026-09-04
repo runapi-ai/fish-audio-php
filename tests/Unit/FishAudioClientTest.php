@@ -132,6 +132,19 @@ final class FishAudioClientTest extends TestCase
         self::assertSame('GET', $transport->requests[0]->getMethod());
     }
 
+    public function testListVoicesSubscribeUsesTheListRequestShape(): void
+    {
+        $transport = new QueueHttpClient([
+            new Response(200, [], '{"voices":[],"total":0,"page_number":2,"page_size":25,"billing":{"reservation":null,"settlement":null,"refund":null}}'),
+        ]);
+        $client = new FishAudioClient(new ClientOptions(apiKey: 'k', httpClient: $transport, maxRetries: 0));
+
+        iterator_to_array($client->listVoices->subscribe(['page_number' => 2, 'page_size' => 25]));
+
+        self::assertSame('GET', $transport->requests[0]->getMethod());
+        self::assertSame('page_number=2&page_size=25', $transport->requests[0]->getUri()->getQuery());
+    }
+
     public function testRunRequiresManagedAudioMetadata(): void
     {
         $transport = new QueueHttpClient([

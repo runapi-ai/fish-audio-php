@@ -1,5 +1,11 @@
 # Changelog
 
+## [v0.4.1](https://github.com/runapi-ai/fish-audio-php/releases/tag/v0.4.1) - 2026-09-04
+
+### Changed
+- Return terminal speech and voice responses whether the request completes directly or through an accepted Task.
+
+
 ## [v0.4.0](https://github.com/runapi-ai/fish-audio-php/releases/tag/v0.4.0) - 2026-08-21
 
 ### Added
