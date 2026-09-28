@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace RunApi\FishAudio\Models;
 
 use RunApi\Core\Models\BaseModel;
-use RunApi\Core\Models\TaskBillingFacts;
+use RunApi\Core\Models\TaskUsage;
 use RunApi\Core\Support\Payload;
 
 /** Completed synchronous text-to-speech response. */
 readonly class TextToSpeechResponse extends BaseModel
 {
-    public ?TaskBillingFacts $billing;
+    public ?TaskUsage $usage;
 
     /**
      * @param list<Audio> $audios
@@ -23,16 +23,15 @@ readonly class TextToSpeechResponse extends BaseModel
         public array $audios,
         public ?string $error = null,
         array $raw = [],
-        ?TaskBillingFacts $billing = null,
+        ?TaskUsage $usage = null,
     ) {
-        $this->billing = $billing ?? self::billing($raw);
+        $this->usage = $usage ?? self::usage($raw);
         parent::__construct($raw === [] ? [
             'id' => $id,
             'status' => $status,
             'audios' => array_map(static fn (Audio $audio): array => $audio->toArray(), $audios),
             'error' => $error,
-            'billing' => $this->billing?->toArray(),
-        ] : $raw);
+            'usage' => $this->usage?->toArray()] : $raw);
     }
 
     /** @param array<string, mixed> $raw */
@@ -48,8 +47,8 @@ readonly class TextToSpeechResponse extends BaseModel
     }
 
     /** @param array<string, mixed> $raw */
-    private static function billing(array $raw): ?TaskBillingFacts
+    private static function usage(array $raw): ?TaskUsage
     {
-        return isset($raw['billing']) && is_array($raw['billing']) ? TaskBillingFacts::fromArray($raw['billing']) : null;
+        return isset($raw['usage']) && is_array($raw['usage']) ? TaskUsage::fromArray($raw['usage']) : null;
     }
 }
