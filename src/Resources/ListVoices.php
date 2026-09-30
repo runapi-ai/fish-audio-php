@@ -32,6 +32,6 @@ readonly class ListVoices extends SyncResource
 
     public static function fromHttp(HttpClient $http): self
     {
-        return new self($http, '/api/v1/fish_audio/voices', 'fish-audio/list-voices', VoicesResponse::class);
+        return new self($http, '/api/v1/fish_audio/voices', VoicesResponse::class);
     }
 }

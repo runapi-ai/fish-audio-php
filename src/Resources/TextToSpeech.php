@@ -38,7 +38,6 @@ readonly class TextToSpeech extends SyncResource
         return new self(
             $http,
             '/api/v1/fish_audio/text_to_speech',
-            'fish-audio/text-to-speech',
             TextToSpeechResponse::class,
         );
     }

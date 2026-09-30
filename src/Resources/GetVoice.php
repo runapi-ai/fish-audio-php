@@ -43,6 +43,6 @@ readonly class GetVoice extends SyncResource
 
     public static function fromHttp(HttpClient $http): self
     {
-        return new self($http, '/api/v1/fish_audio/voices', 'fish-audio/get-voice', VoiceResponse::class);
+        return new self($http, '/api/v1/fish_audio/voices', VoiceResponse::class);
     }
 }
