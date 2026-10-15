@@ -41,7 +41,7 @@ final class FishAudioClientTest extends TestCase
             'text' => 'A product render',
             'output_format' => 'wav',
             'sample_rate_hz' => 24000,
-            'references' => [['audio' => 'UklGRg==', 'text' => 'Reference transcript']]]);
+            'references' => [['audio' => 'https://cdn.runapi.ai/public/samples/voice.mp3', 'text' => 'Reference transcript']]]);
 
         $body = json_decode((string) $transport->requests[0]->getBody(), true, flags: JSON_THROW_ON_ERROR);
 
@@ -55,7 +55,7 @@ final class FishAudioClientTest extends TestCase
             'text' => 'A product render',
             'output_format' => 'wav',
             'sample_rate_hz' => 24000,
-            'references' => [['audio' => 'UklGRg==', 'text' => 'Reference transcript']]], $body);
+            'references' => [['audio' => 'https://cdn.runapi.ai/public/samples/voice.mp3', 'text' => 'Reference transcript']]], $body);
         self::assertSame('/api/v1/fish_audio/text_to_speech', $transport->requests[0]->getUri()->getPath());
     }
 

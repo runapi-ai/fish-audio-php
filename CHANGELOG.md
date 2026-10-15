@@ -1,5 +1,12 @@
 # Changelog
 
+## [v0.6.0](https://github.com/runapi-ai/fish-audio-php/releases/tag/v0.6.0) - 2026-10-15
+
+### Breaking
+- Fish s1, s2-pro and s2.1-pro temporary cloning accepts at most one HTTPS audio URL with its exact transcript and cannot be combined with voice_id.
+  Migration: Upload local or Base64 audio through POST /api/v1/files, pass the returned URL in references[0].audio with exact text, keep one sample and remove voice_id. Ensure the URL remains valid while queued and read. Choose voice_id alone for an existing voice.
+
+
 ## [v0.5.0](https://github.com/runapi-ai/fish-audio-php/releases/tag/v0.5.0) - 2026-09-30
 
 ### Changed
